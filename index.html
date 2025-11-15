@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة نشر البرومتات الاحترافية 🚀</title>
+    <style>
+        /* ---------------------------------
+        * CSS للتنسيق والمظهر الاحترافي
+        * --------------------------------- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #fff;
+            --border-color: #dee2e6;
+            --comment-bg: #f1f1f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        /* تنسيق بطاقة البرومبت */
+        .prompt-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .prompt-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .category {
+            font-size: 0.9em;
+            color: #6c757d;
+            padding: 3px 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        /* تنسيق الصورة المرفقة */
+        .prompt-image-container {
+            text-align: center;
+            margin-bottom: 15px;
+            max-height: 400px; /* تحديد أقصى ارتفاع */
+            overflow: hidden; 
+            border-radius: 6px;
+        }
+        .prompt-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        /* تفاصيل البرومبت */
+        details {
+            margin-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 10px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #1e7e34;
+        }
+
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 0.9em;
+        }
+
+        /* التفاعلات والأزرار */
+        .interactions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .upvote-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .upvote-btn:hover { background-color: #1e7e34; }
+
+        .copy-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        .copy-btn:hover { background-color: #e0a800; }
+        
+        .comment-toggle-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .comment-toggle-btn:hover { background-color: #5a6268; }
+
+        /* نموذج الإضافة والبحث */
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            text-align: right;
+        }
+
+        /* تنسيق حقل رفع الصورة في نموذج الإضافة */
+        .file-input-group {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f7f7f7;
+        }
+        .file-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="file"] {
+            width: 100%;
+            border: none;
+            padding: 0;
+            background-color: transparent;
+        }
+
+        #prompt-search, #category-filter {
+            width: 49%;
+            display: inline-block;
+        }
+        #prompt-search { margin-left: 2%; }
+
+        .submit-prompt {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .submit-prompt button {
+            background-color: var(--primary-color);
+            color: white;
+            width: 100%;
+        }
+        .submit-prompt button:hover { background-color: #0056b3; }
+
+        /* تنسيق التعليقات */
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+        }
+        .comment {
+            background-color: var(--comment-bg);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .comment-meta {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .comment-form input[type="text"], .comment-form textarea {
+            width: 49%;
+            display: inline-block;
+        }
+        .comment-form input[name="name"] { margin-left: 2%; }
+
+        .comment-form button {
+            background-color: #008080;
+            color: white;
+            padding: 8px 15px;
+        }
+        .comment-form button:hover { background-color: #006666; }
+
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>منصة البرومتات الإبداعية 💡</h1>
+            <p>اكتشف، شارك، وصوت، وعلق على أفضل البرومتات.</p>
+        </header>
+
+        <section class="search-filter">
+            <input type="text" id="prompt-search" placeholder="ابحث عن برومبت..." aria-label="حقل البحث عن برومبت">
+            <select id="category-filter" aria-label="تصفية حسب الفئة">
+                <option value="all">كل الفئات</option>
+                <option value="ai-art">رسومات الذكاء الاصطناعي</option>
+                <option value="writing">كتابة محتوى</option>
+                <option value="code">توليد أكواد</option>
+            </select>
+        </section>
+
+        <section class="submit-prompt">
+            <h2>أضف برومبت جديدًا</h2>
+            <form id="new-prompt-form">
+                <input type="text" id="prompt-title-input" placeholder="عنوان البرومبت" required>
+                <textarea id="prompt-content-input" placeholder="نص البرومبت بالتفصيل" rows="5" required></textarea>
+                
+                <div class="file-input-group">
+                    <label for="prompt-image-input">صورة البرومبت (اختياري - تعرض محليًا):</label>
+                    <input type="file" id="prompt-image-input" accept="image/*" aria-label="رفع صورة للبرومبت">
+                </div>
+
+                <select id="prompt-category-input" required>
+                    <option value="">اختر الفئة</option>
+                    <option value="ai-art">رسومات الذكاء الاصطناعي</option>
+                    <option value="writing">كتابة محتوى</option>
+                    <option value="code">توليد أكواد</option>
+                </select>
+                <button type="submit">نشر البرومبت</button>
+            </form>
+        </section>
+
+        <section id="prompts-list">
+            <h2>أحدث البرومتات</h2>
+            <article class="prompt-card" data-category="ai-art" data-votes="150">
+                <h3>برومبت لتوليد صور خيالية (مثال)</h3>
+                <p class="category">رسومات الذكاء الاصطناعي</p>
+                
+                <div class="prompt-image-container">
+                    <img src="https://via.placeholder.com/600x300/007bff/ffffff?text=Example+Image" alt="صورة توضيحية للبرومبت" class="prompt-image">
+                </div>
+
+                <details>
+                    <summary>عرض البرومبت كاملاً...</summary>
+                    <pre class="prompt-text">
+                        "صورة رقمية فائقة الدقة (8K) لسفينة فضائية قديمة تهبط في غابة استوائية مضيئة بضوء أزرق، ألوان نيون ساطعة، بأسلوب فني مستوحى من Cyberpunk و Fantasy، إضاءة درامية."
+                    </pre>
+                </details>
+                <div class="interactions">
+                    <button class="upvote-btn" onclick="handleUpvote(this)">👍 تصويت (<span class="vote-count">150</span>)</button>
+                    <button class="copy-btn" onclick="copyPrompt(this)">نسخ البرومبت</button>
+                    <button class="comment-toggle-btn" onclick="toggleComments(this)">💬 تعليقات (<span>1</span>)</button>
+                </div>
+                <div class="comments-section" style="display:none;">
+                    <h4>التعليقات</h4>
+                    <div class="comments-list">
+                        <div class="comment">
+                            <span class="comment-meta">أحمد (مستخدم افتراضي):</span>
+                            <p>صورة رائعة! البرومبت فعال جداً.</p>
+                        </div>
+                    </div>
+                    <form class="comment-form" onsubmit="addComment(event, this)">
+                        <input type="text" name="name" placeholder="اسمك" required>
+                        <textarea name="comment" placeholder="اكتب تعليقك هنا..." rows="2" required></textarea>
+                        <button type="submit">إضافة تعليق</button>
+                    </form>
+                </div>
+            </article>
+            
+            </section>
+
+        <footer>
+            <p>&copy; 2025 منصة البرومتات. جميع الحقوق محفوظة.</p>
+        </footer>
+    </div>
+
+    <script>
+        /* ---------------------------------
+        * JAVASCRIPT لإضافة التفاعل والتعليقات والصور
+        * --------------------------------- */
+        document.addEventListener('DOMContentLoaded', () => {
+            const promptList = document.getElementById('prompts-list');
+            const newPromptForm = document.getElementById('new-prompt-form');
+            const searchInput = document.getElementById('prompt-search');
+            const categoryFilter = document.getElementById('category-filter');
+            
+            // 1. وظيفة إضافة برومبت جديد
+            newPromptForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('prompt-title-input').value;
+                const content = document.getElementById('prompt-content-input').value;
+                const category = document.getElementById('prompt-category-input').value;
+                const imageFile = document.getElementById('prompt-image-input').files[0]; // **الحصول على ملف الصورة**
+
+                if (!title || !content || !category) return;
+                
+                // **معالجة ملف الصورة وعرضها محليًا**
+                if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imageDataUrl = event.target.result; // Data URL للصورة
+                        const newCard = createPromptCard(title, content, category, imageDataUrl);
+                        promptList.prepend(newCard);
+                    };
+                    reader.readAsDataURL(imageFile); // قراءة الملف كـ Data URL
+                } else {
+                    const newCard = createPromptCard(title, content, category, null);
+                    promptList.prepend(newCard);
+                }
+                
+                newPromptForm.reset();
+            });
+
+            // **دالة لإنشاء بطاقة برومبت HTML**
+            function createPromptCard(title, content, category, imageSource) {
+                const card = document.createElement('article');
+                card.className = 'prompt-card';
+                card.setAttribute('data-category', category);
+                card.setAttribute('data-votes', 0);
+                
+                const categoryName = category === 'ai-art' ? 'رسومات الذكاء الاصطناعي' :
+                                     category === 'writing' ? 'كتابة محتوى' :
+                                     'توليد أكواد';
+                
+                // تحديد مصدر الصورة الافتراضي في حال عدم وجود صورة مرفقة
+                const finalImageSrc = imageSource || 'https://via.placeholder.com/600x300/CCCCCC/808080?text=No+Image';
+
+                card.innerHTML = `
+                    <h3>${title}</h3>
+                    <p class="category">${categoryName}</p>
+                    
+                    <div class="prompt-image-container">
+                        <img src="${finalImageSrc}" alt="صورة البرومبت" class="prompt-image">
+                    </div>
+                    
+                    <details>
+                        <summary>عرض البرومبت كاملاً...</summary>
+                        <pre class="prompt-text">${content}</pre>
+                    </details>
+                    <div class="interactions">
+                        <button class="upvote-btn" onclick="handleUpvote(this)">👍 تصويت (<span class="vote-count">0</span>)</button>
+                        <button class="copy-btn" onclick="copyPrompt(this)">نسخ البرومبت</button>
+                        <button class="comment-toggle-btn" onclick="toggleComments(this)">💬 تعليقات (<span>0</span>)</button>
+                    </div>
+                    <div class="comments-section" style="display:none;">
+                        <h4>التعليقات</h4>
+                        <div class="comments-list"></div>
+                        <form class="comment-form" onsubmit="addComment(event, this)">
+                            <input type="text" name="name" placeholder="اسمك" required>
+                            <textarea name="comment" placeholder="اكتب تعليقك هنا..." rows="2" required></textarea>
+                            <button type="submit">إضافة تعليق</button>
+                        </form>
+                    </div>
+                `;
+                return card;
+            }
+
+            // ... (بقية دوال البحث والتصفية)
+            function filterPrompts() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedCategory = categoryFilter.value;
+                
+                const cards = promptList.querySelectorAll('.prompt-card');
+                
+                cards.forEach(card => {
+                    const cardTitle = card.querySelector('h3').textContent.toLowerCase();
+                    const cardCategory = card.getAttribute('data-category');
+                    
+                    const isSearchMatch = cardTitle.includes(searchTerm);
+                    const isCategoryMatch = selectedCategory === 'all' || cardCategory === selectedCategory;
+                    
+                    card.style.display = (isSearchMatch && isCategoryMatch) ? 'block' : 'none';
+                });
+            }
+
+            searchInput.addEventListener('input', filterPrompts);
+            categoryFilter.addEventListener('change', filterPrompts);
+        });
+
+        // 3. وظيفة التصويت
+        function handleUpvote(buttonElement) {
+            const voteSpan = buttonElement.querySelector('.vote-count');
+            let currentVotes = parseInt(voteSpan.textContent);
+            currentVotes++;
+            voteSpan.textContent = currentVotes;
+            
+            const card = buttonElement.closest('.prompt-card');
+            card.setAttribute('data-votes', currentVotes);
+            
+            buttonElement.disabled = true;
+            buttonElement.textContent = "✅ تم التصويت";
+        }
+
+        // 4. وظيفة النسخ
+        function copyPrompt(buttonElement) {
+            const promptTextElement = buttonElement.closest('.prompt-card').querySelector('.prompt-text');
+            const promptText = promptTextElement.textContent.trim();
+            
+            navigator.clipboard.writeText(promptText).then(() => {
+                const originalText = buttonElement.textContent;
+                buttonElement.textContent = "✅ تم النسخ!";
+                setTimeout(() => {
+                    buttonElement.textContent = originalText;
+                }, 1500);
+            }).catch(err => {
+                console.error('فشل في نسخ النص: ', err);
+                alert('فشل في النسخ. يرجى النسخ يدوياً.');
+            });
+        }
+        
+        // 5. وظيفة إظهار/إخفاء التعليقات
+        function toggleComments(buttonElement) {
+            const card = buttonElement.closest('.prompt-card');
+            const commentsSection = card.querySelector('.comments-section');
+            
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                buttonElement.textContent = "💬 إخفاء التعليقات";
+            } else {
+                commentsSection.style.display = 'none';
+                const commentCount = card.querySelector('.comments-list').children.length;
+                buttonElement.textContent = `💬 تعليقات (${commentCount})`;
+            }
+        }
+
+        // 6. وظيفة إضافة التعليق
+        function addComment(e, formElement) {
+            e.preventDefault();
+
+            const card = formElement.closest('.prompt-card');
+            const commentsList = card.querySelector('.comments-list');
+            const commentToggleBtn = card.querySelector('.comment-toggle-btn span');
+            
+            const name = formElement.elements.name.value || 'زائر مجهول';
+            const commentText = formElement.elements.comment.value;
+            
+            if (!commentText) return;
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment';
+            newComment.innerHTML = `
+                <span class="comment-meta">${name}:</span>
+                <p>${commentText}</p>
+            `;
+            
+            commentsList.appendChild(newComment);
+            
+            let currentCount = parseInt(commentToggleBtn.textContent);
+            commentToggleBtn.textContent = currentCount + 1;
+            card.querySelector('.comment-toggle-btn').textContent = `💬 تعليقات (${currentCount + 1})`;
+
+
+            formElement.reset();
+        }
+
+    </script>
+</body>
+</html>
